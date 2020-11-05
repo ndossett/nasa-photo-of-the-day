@@ -3,7 +3,14 @@ import React from 'react'
 const PhotoCard = props => {
     return (
         <div>
-            <h2>PhotoCard {props.name}</h2>
+            {props.error ? 
+                (<p>Error: {props.error}</p>) : 
+                (props.photoD.map(photoData => (
+                     <div>
+                        <h2>{photoData.title}</h2>
+                    </div>
+                 ))
+              )}
         </div>
     );
 };

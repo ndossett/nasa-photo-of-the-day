@@ -2,27 +2,30 @@ import React, { useState, useEffect } from "react";
 import "./index.css";
 import axios from 'axios'
 import PhotoCard from './components/PhotoCard.js'
-import MoreButton from './components/MoreButton.js'
+import GetButton from './components/GetButton.js'
 
 
 export default function App() {
 
     const [error, setError] = useState('')
     const [isFetchingData, setIsFetchingData] = useState(false)
-    const [photo, setPhoto] = useState([])
+    const [photoData, setPhotoData] = useState([])
 
     const getData = () => {
-      console.log('button pushed')
+      // console.log('button pushed')
+      setIsFetchingData(true)
       axios
-      .get('https://api.nasa.gov/planetary/apod')
+      .get('https://api.nasa.gov/planetary/apod?api_key=pzM1DIPQzxHNEhdTia6x2wZ1CCXCVhzUcCQAqVjN')
       .then(res => {
-        console.log('response', res.data)
-        setPhoto(res.data)
-        console.log('photo', photo)
+        // console.log('response', res.data)
+        setPhotoData(res.data)
+        // console.log('photoData', photoData)
+        setIsFetchingData(false)
       })
       .catch(error => {
         console.log(`Error ${error}`)
         setError(error)
+        setIsFetchingData(false)
       })
     }
     
@@ -30,8 +33,8 @@ export default function App() {
   return (
     <div className="App">
       <h1>Astronomy Photo of the Day</h1>
-      <MoreButton getDataBtn={getData} />
-      <PhotoCard name={'Space X'}/>
+      <GetButton getDataBtn={getData} isFetchingData={isFetchingData}/>
+      <PhotoCard photoD={photoData} error={error}/>
     </div>
   );
 }
